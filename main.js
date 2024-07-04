@@ -99,7 +99,7 @@ const menu = [
         return  `<button type="button" class="filter-btn" data-id=${category}>${category}</button>`;
     }).join("");
     containerBtbs.innerHTML = categoryBtns
-    const filterBtns = document.querySelectorAll(".filter-btn");
+    const filterBtns = containerBtbs.querySelectorAll(".filter-btn");
 
     //filtros de busqueda 
     filterBtns.forEach(btn => {
@@ -142,3 +142,35 @@ const menu = [
     displayMenu = displayMenu.join("");
     sectionCenter.innerHTML = displayMenu;
   }
+function displayMenuBtns() {
+        //botones dinamicos
+        const categories = menu.reduce((values,item) =>{
+            if (!values.includes(item.category)) {
+                values.push(item.category);
+            }
+            return values
+        },['all'])
+        const categoryBtns = categories.map((category) => {
+            return  `<button type="button" class="filter-btn" data-id=${category}>${category}</button>`;
+        }).join("");
+        containerBtbs.innerHTML = categoryBtns
+        const filterBtns = containerBtbs.querySelectorAll(".filter-btn");
+    
+        //filtros de busqueda 
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click',function(e){
+                const category = e.currentTarget.dataset.id;
+                const menuCategory = menu.filter((menuItem) => {
+                    if (menuItem.category === category) {
+                        return menuItem;
+                    }
+                        
+                });
+                if (category === 'all'){
+                    displayMenuItems(menu);
+                } else {
+                    displayMenuItems(menuCategory);
+                }
+            })
+        });
+}
