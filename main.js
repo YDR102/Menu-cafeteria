@@ -72,34 +72,56 @@ const menu = [
       img: "./img/item-9.jpeg",
       desc: `skateboard fam synth authentic semiotics. Live-edge lyft af, edison bulb yuccie crucifix microdosing.`,
     },
+    {
+      id: 10,
+      title: "steak dinner",
+      category: "denner",
+      price: 39.99,
+      img: "./img/item-10.jpeg",
+      desc: `I'm baby woke mlkshk wolf bitters live-edge blue bottle, hammock freegan copper mug whatever cold-pressed.`,
+    },
   ];
 
   const sectionCenter = document.querySelector(".section-center");
-  const filterBtns = document.querySelectorAll(".filter-btn");
+  const containerBtbs = document.querySelector(".btn-container");
 
   //cargando items
   window,addEventListener('DOMContentLoaded', function () {
     displayMenuItems(menu);
-  })
-
-  //filtros de busqueda 
-  filterBtns.forEach(btn => {
-    btn.addEventListener('click',function(e){
-        const category = e.currentTarget.dataset.id;
-        const menuCategory = menu.filter((menuItem) => {
-            if (menuItem.category === category) {
-                return menuItem
-            }
-                
-        });
-        if (category === 'all'){
-            displayMenuItems(menu)
-        } else {
-            displayMenuItems(menuCategory)
+    //botones dinamicos
+    const categories = menu.reduce((values,item) =>{
+        if (!values.includes(item.category)) {
+            values.push(item.category);
         }
-    })
+        return values
+    },['all'])
+    const categoryBtns = categories.map((category) => {
+        return  `<button type="button" class="filter-btn" data-id=${category}>${category}</button>`;
+    }).join("");
+    containerBtbs.innerHTML = categoryBtns
+    const filterBtns = document.querySelectorAll(".filter-btn");
+
+    //filtros de busqueda 
+    filterBtns.forEach(btn => {
+        btn.addEventListener('click',function(e){
+            const category = e.currentTarget.dataset.id;
+            const menuCategory = menu.filter((menuItem) => {
+                if (menuItem.category === category) {
+                    return menuItem;
+                }
+                    
+            });
+            if (category === 'all'){
+                displayMenuItems(menu);
+            } else {
+                displayMenuItems(menuCategory);
+            }
+        })
+    });
   });
 
+
+//comida dinamica
   function displayMenuItems(menuItems) {
     let displayMenu = menuItems.map(function (item) {
         
